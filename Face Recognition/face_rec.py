@@ -6,9 +6,9 @@
 
 
 # Paths to Cascade Classifiers
-face_casc_path = "/Users/csstnns/anaconda3/lib/python3.7/site-packages/cv2/data/haarcascade_frontalface_default.xml"
-eye_casc_path = "/Users/csstnns/anaconda3/lib/python3.7/site-packages/cv2/data/haarcascade_eye.xml"
-nose_casc_path = "/Users/csstnns/anaconda3/lib/python3.7/site-packages/cv2/data/haarcascade_mcs_nose.xml"
+face_casc_path = 'haarcascade_frontalface_default.xml'
+eye_casc_path = 'haarcascade_eye.xml'
+nose_casc_path = 'haarcascade_mcs_nose.xml'
 
 #import required libraries
 from keras.models import load_model
@@ -18,15 +18,20 @@ import numpy as np
 #load the CNN model we saved
 model = load_model('face_rec.h5')
 #we know the label to name maps so let's use them
-label_map = {0: 'darda', 1: 'labenm', 2: 'Noureddin', 3: 'sjcutt'}
+#label_map = {0: 'darda', 1: 'labenm', 2: 'Noureddin', 3: 'sjcutt'}
+label_map = {0: 'darda', 1: 'labenm', 2: 'martyn', 3: 'noureddin', 4: 'sjcutt'}
 
 # create a Cascade Classifier object for face, eye and nose
-faceCascade = cv2.CascadeClassifier(face_casc_path)
-eyeCascade = cv2.CascadeClassifier(eye_casc_path)
-noseCascade = cv2.CascadeClassifier(nose_casc_path)
+#faceCascade = cv2.CascadeClassifier(face_casc_path)
+faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + face_casc_path)
+eyeCascade = cv2.CascadeClassifier(cv2.data.haarcascades + eye_casc_path)
+noseCascade = cv2.CascadeClassifier(cv2.data.haarcascades + nose_casc_path)
+#faceCascade = cv2.CascadeClassifier(face_casc_path)
+#eyeCascade = cv2.CascadeClassifier(eye_casc_path)
+#noseCascade = cv2.CascadeClassifier(nose_casc_path)
 
 ## Connect to WebCam and start video capture
-video_capture = cv2.VideoCapture(0)
+video_capture = cv2.VideoCapture(-1) #0
 
 ## Videos are made of frames so we loop through the recording
 ## one frame at a time
@@ -78,16 +83,16 @@ while True:
     for (ex, ey, ew, eh) in eyes:
         cv2.rectangle(frame, (ex, ey), (ex+ew, ey+eh), (255, 0, 0), 2)
        
-    noses = noseCascade.detectMultiScale(
-        gray,
-        scaleFactor=1.1,
-        minNeighbors=5,
-        minSize=(30, 30),
-        flags=cv2.CASCADE_SCALE_IMAGE
-    )
-
-    for (ex, ey, ew, eh) in noses:
-        cv2.rectangle(frame, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2)
+#    noses = noseCascade.detectMultiScale(
+#        gray,
+#        scaleFactor=1.1,
+#        minNeighbors=5,
+#        minSize=(30, 30),
+#        flags=cv2.CASCADE_SCALE_IMAGE
+#    )
+#
+#    for (ex, ey, ew, eh) in noses:
+#        cv2.rectangle(frame, (ex, ey), (ex+ew, ey+eh), (0, 255, 0), 2)
 
     # Display the resulting frame
     cv2.imshow('Video', frame)
